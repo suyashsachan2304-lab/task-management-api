@@ -1,0 +1,85 @@
+spring:
+  application:
+    name: task-management
+
+  datasource:
+    url: jdbc:h2:mem:taskdb
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+    open-in-view: false
+    properties:
+      hibernate:
+        format_sql: true
+
+  web:
+    resources:
+      add-mappings: true
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include:
+          - health
+          - info
+          - metrics
+          - prometheus
+
+  metrics:
+    enable:
+      cache: true
+
+  zipkin:
+    tracing:
+      endpoint: http://zipkin:9411/api/v2/spans
+
+  tracing:
+    enabled: true
+    sampling:
+      probability: 1.0
+
+  endpoint:
+    health:
+      show-details: always
+
+  prometheus:
+    metrics:
+      export:
+        enabled: true
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+
+logging:
+  level:
+    root: INFO
+    org.springframework: INFO
+    org.hibernate.SQL: DEBUG
+    org.hibernate.orm.jdbc.bind: TRACE
+  pattern:
+    console: >
+      %d{yyyy-MM-dd HH:mm:ss.SSS}
+      [%thread]
+      %-5level
+      [traceId=%X{traceId}]
+      [spanId=%X{spanId}]
+      [correlationId=%X{correlationId}]
+      %logger{36}
+      - %msg%n
+
+server:
+  error:
+    whitelabel:
+      enabled: false
