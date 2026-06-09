@@ -23,7 +23,7 @@ The application demonstrates:
 * Create Task
 * Get Task By ID
 * Update Task
-* Delete Task
+* Soft Delete Task
 * Pagination
 * Filtering by Status
 * Sorting by Due Date
@@ -168,6 +168,12 @@ All APIs are exposed through:
   "updatedAt": "2026-05-31T20:00:00"
 }
 ```
+
+Delete behavior:
+
+* `DELETE /api/v1/tasks/{id}` performs a soft delete.
+* Deleted tasks remain in the database with deletion metadata.
+* Standard read endpoints exclude soft-deleted tasks.
 
 ---
 

@@ -55,4 +55,17 @@ public class Task {
     @Column(nullable = false)
     private LocalDateTime updatedAt;
 
+    @Column(nullable = false)
+    private boolean deleted;
+
+    private LocalDateTime deletedAt;
+
+    public void markDeleted(
+            LocalDateTime deletedAt
+    ) {
+
+        this.deleted = true;
+        this.deletedAt = deletedAt;
+    }
+
 }

@@ -225,16 +225,18 @@ class TaskServiceImplTest {
         when(taskRepository.findById(TASK_ID))
                 .thenReturn(Optional.of(task));
 
-        doNothing()
-                .when(taskRepository)
-                .delete(task);
+        when(taskRepository.save(task))
+                .thenReturn(task);
 
         assertDoesNotThrow(
                 () -> taskService.deleteTask(TASK_ID)
         );
 
+        assertTrue(task.isDeleted());
+        assertNotNull(task.getDeletedAt());
+
         verify(taskRepository)
-                .delete(task);
+                .save(task);
 
         verify(taskMetrics)
                 .incrementTaskDeleted();

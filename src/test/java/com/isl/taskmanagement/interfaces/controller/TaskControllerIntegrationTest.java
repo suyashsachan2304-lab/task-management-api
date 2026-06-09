@@ -19,6 +19,8 @@ import java.util.UUID;
 import static org.hamcrest.Matchers.greaterThan;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.notNullValue;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -181,6 +183,18 @@ class TaskControllerIntegrationTest {
                                 taskId)
                 )
                 .andExpect(status().isOk());
+
+        Task deletedTask = jpaTaskRepository.findById(taskId)
+                .orElseThrow();
+
+        assertTrue(deletedTask.isDeleted());
+        assertNotNull(deletedTask.getDeletedAt());
+
+        mockMvc.perform(
+                        get("/api/v1/tasks/{id}",
+                                taskId)
+                )
+                .andExpect(status().isNotFound());
     }
 
     @Test

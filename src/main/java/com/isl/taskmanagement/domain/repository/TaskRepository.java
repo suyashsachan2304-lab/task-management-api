@@ -14,8 +14,6 @@ public interface TaskRepository {
 
     Optional<Task> findById(String id);
 
-    void delete(Task task);
-
     List<Task> findAllByDueDateAsc();
 
     Page<Task> findAll(Pageable pageable);

@@ -20,6 +20,7 @@ import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.Caching;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -215,12 +216,16 @@ public class TaskServiceImpl
                             );
                         });
 
-        taskRepository.delete(task);
+        task.markDeleted(
+                LocalDateTime.now()
+        );
+
+        taskRepository.save(task);
 
         taskMetrics.incrementTaskDeleted();
 
         log.info(
-                "Task deleted successfully id={}",
+                "Task soft deleted successfully id={}",
                 taskId
         );
     }

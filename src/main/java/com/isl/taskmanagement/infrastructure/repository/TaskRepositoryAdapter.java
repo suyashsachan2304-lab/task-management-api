@@ -32,17 +32,12 @@ public class TaskRepositoryAdapter
     public Optional<Task> findById(
             String id
     ) {
-        return jpaTaskRepository.findById(id);
-    }
-
-    @Override
-    public void delete(Task task) {
-        jpaTaskRepository.delete(task);
+        return jpaTaskRepository.findByIdAndDeletedFalse(id);
     }
 
     @Override
     public List<Task> findAllByDueDateAsc() {
-        return jpaTaskRepository.findAll(
+        return jpaTaskRepository.findByDeletedFalse(
                 Sort.by(
                         Sort.Direction.ASC,
                         "dueDate"
@@ -54,7 +49,7 @@ public class TaskRepositoryAdapter
     public Page<Task> findAll(
             Pageable pageable
     ) {
-        return jpaTaskRepository.findAll(
+        return jpaTaskRepository.findByDeletedFalse(
                 pageable
         );
     }
@@ -64,7 +59,7 @@ public class TaskRepositoryAdapter
             TaskStatus status,
             Pageable pageable
     ) {
-        return jpaTaskRepository.findByStatus(
+        return jpaTaskRepository.findByStatusAndDeletedFalse(
                 status,
                 pageable
         );
